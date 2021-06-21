@@ -18,25 +18,33 @@ export class AddProductComponent implements OnInit {
 
   constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string, private _location: Location) { this.http = http; this.baseUrl = baseUrl; }
 
+  selectedLevel;
+  data: Array<Object> = [
+    { id: 1, name: "CPU" },
+    { id: 2, name: "GPU" },
+    { id: 3, name: "RAM" },
+    { id: 4, name: "MOUSE" }
+  ];
+
+
   ngOnInit() {
   }
 
   onSubmit(form: NgForm) {
-    let product = {
-      id: "",
-      name: form.value.number,
-      category: form.value.numberOfSeats,
+    let Product = {
+      name: form.value.name,
+      category: form.value.category.id,
       price: form.value.price,
     }
 
-    this.addProduct(product, form);
+    this.addProduct(Product, form);
   }
 
   async addProduct(productInput, form) {
     console.log(productInput);
-    this.http.post<Product>(this.baseUrl + 'api/product', productInput).subscribe(result => {
+    this.http.post<Product>(this.baseUrl + 'api/products', productInput).subscribe(result => {
       this.product = result;
-      this.message.next('Room "' + this.product.name + '" was added successfully.');
+      this.message.next('Poduct "' + this.product.name + '" was added successfully.');
       form.reset();
     }, error => this.message.next(error.error));
   }

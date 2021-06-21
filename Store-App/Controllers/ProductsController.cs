@@ -23,7 +23,7 @@ namespace Store_App.Controllers
 
         // GET: api/Products
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Product>>> GetProducts()
+        public async Task<ActionResult> GetProducts()
         {
             var elo = await _context.Products.ToArrayAsync();
             return Ok(elo);
@@ -82,7 +82,7 @@ namespace Store_App.Controllers
             _context.Products.Add(product);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetProduct", new { id = product.Id }, product);
+            return Ok("Added successfully");
         }
 
         // DELETE: api/Products/5

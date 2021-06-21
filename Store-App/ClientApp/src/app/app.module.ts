@@ -12,7 +12,7 @@ import { FetchDataComponent } from './fetch-data/fetch-data.component';
 import { ApiAuthorizationModule } from 'src/api-authorization/api-authorization.module';
 import { AuthorizeGuard } from 'src/api-authorization/authorize.guard';
 import { AuthorizeInterceptor } from 'src/api-authorization/authorize.interceptor';
-import { ProductDataComponent, ProductComponent } from './product/product.component';
+import { ProductDataComponent } from './product/product.component';
 import { AddProductComponent } from './product/add-product/add-product.component';
 import { EditProductComponent } from './product/edit-product/edit-product.component';
 
@@ -26,7 +26,6 @@ import { EditProductComponent } from './product/edit-product/edit-product.compon
     ProductDataComponent,
     AddProductComponent,
     EditProductComponent,
-    ProductComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -37,7 +36,9 @@ import { EditProductComponent } from './product/edit-product/edit-product.compon
       { path: '', component: HomeComponent, pathMatch: 'full' },
       { path: 'counter', component: CounterComponent },
       { path: 'fetch-data', component: FetchDataComponent, canActivate: [AuthorizeGuard] },
-      { path: 'product', component: ProductDataComponent},
+
+      { path: 'product', component: ProductDataComponent },
+      { path: 'product/add', component: AddProductComponent },
     ])
   ],
   providers: [
