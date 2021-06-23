@@ -20,7 +20,11 @@
       <td>{{ product.name }}</td>
       <td>{{ product.category }}</td>
       <td>{{ product.price }}</td>
-      <td><a [routerLink]="['edit', product.id]" class="btn btn-primary btn-sm">Edit</a></td>
+      <td>
+        <a [routerLink]="['edit', product.id]" class="btn btn-primary btn-sm">Edit</a>
+        <button class="btn btn-danger btn-sm" (click)="onDelete(product.id)">Delete</button>
+      </td>
+
     </tr>
   </tbody>
 </table>
