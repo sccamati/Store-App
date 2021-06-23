@@ -23,10 +23,9 @@ namespace Store_App.Controllers
 
         // GET: api/Products
         [HttpGet]
-        public async Task<ActionResult> GetProducts()
+        public async Task<ActionResult<IEnumerable<Product>>> GetProducts()
         {
-            var elo = await _context.Products.ToArrayAsync();
-            return Ok(elo);
+            return await _context.Products.ToArrayAsync();
         }
 
         // GET: api/Products/5
@@ -45,14 +44,10 @@ namespace Store_App.Controllers
 
         // PUT: api/Products/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutProduct(int id, Product product)
+        [HttpPut]
+        public async Task<IActionResult> PutProduct(Product product)
         {
-            if (id != product.Id)
-            {
-                return BadRequest();
-            }
-
+            int id = product.Id;
             _context.Entry(product).State = EntityState.Modified;
 
             try
@@ -71,7 +66,7 @@ namespace Store_App.Controllers
                 }
             }
 
-            return NoContent();
+            return Ok(product);
         }
 
         // POST: api/Products

@@ -39,6 +39,7 @@ import { EditProductComponent } from './product/edit-product/edit-product.compon
 
       { path: 'product', component: ProductDataComponent },
       { path: 'product/add', component: AddProductComponent },
+      { path: 'product/edit/:id', component: EditProductComponent },
     ])
   ],
   providers: [
