@@ -11,29 +11,24 @@ import { BehaviorSubject } from 'rxjs';
 })
 
 export class AddProductComponent implements OnInit {
-  product: Product;
+  categories: Array<Category>;
   http: HttpClient;
   baseUrl: string;
+  product: Product;
+  selectedLevel;
   public message = new BehaviorSubject<string>(null);
 
   constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string, private _location: Location) { this.http = http; this.baseUrl = baseUrl; }
 
-  selectedLevel;
-  data: Array<Object> = [
-    { id: 1, name: "CPU" },
-    { id: 2, name: "GPU" },
-    { id: 3, name: "RAM" },
-    { id: 4, name: "MOUSE" }
-  ];
-
-
   ngOnInit() {
+    this.categories = null;
+    this.getCategories();
   }
 
   onSubmit(form: NgForm) {
     let Product = {
       name: form.value.name,
-      category: form.value.category.id,
+      category: <Category>form.value.category,
       price: form.value.price,
     }
 
@@ -49,6 +44,13 @@ export class AddProductComponent implements OnInit {
     }, error => this.message.next(error.error));
   }
 
+  async getCategories() {
+    this.http.get<Array<Category>>(this.baseUrl + 'api/categories').subscribe(result => {
+      this.categories = result;
+      this.selectedLevel = this.categories[this.product.category.id];
+    }, error => console.error(error));
+  }
+
   back() {
     this._location.back();
   }
@@ -57,6 +59,11 @@ export class AddProductComponent implements OnInit {
 interface Product {
   id: number;
   name: string;
-  category: number;
+  category: Category;
   price: number;
+}
+
+interface Category {
+  id: number;
+  name: string;
 }

@@ -16,8 +16,8 @@ export class ProductDataComponent {
 
   onDelete(id: number) {
     this.http.delete<Product[]>(this.baseUrl + 'api/products/' + id).subscribe(result => {
-      let room = this.products.find(x => x.id === id);
-      let index = this.products.indexOf(room, 0);
+      let product = this.products.find(x => x.id === id);
+      let index = this.products.indexOf(product, 0);
       this.products.splice(index, 1);
     }, error => console.error(error));
   }

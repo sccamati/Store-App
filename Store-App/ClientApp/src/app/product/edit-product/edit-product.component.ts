@@ -14,19 +14,13 @@ export class EditProductComponent implements OnInit {
   public message = new BehaviorSubject<string>(null);
   product: Product;
   id: number;
+  categories: Array<Category>;
+  selectedLevel;
 
   constructor(private route: ActivatedRoute,
     private http: HttpClient,
     @Inject('BASE_URL') private baseUrl: string,
     private _location: Location) { }
-
-  selectedLevel;
-  data: Array<Object> = [
-    { id: 1, name: "CPU" },
-    { id: 2, name: "GPU" },
-    { id: 3, name: "RAM" },
-    { id: 4, name: "MOUSE" }
-  ];
 
   ngOnInit() {
     this.id = +this.route.snapshot.paramMap.get('id');
@@ -37,13 +31,15 @@ export class EditProductComponent implements OnInit {
       price: null,
     }
     this.fetchUser();
+    this.categories = null;
+    this.getCategories();
   }
 
   onSubmit(form: NgForm) {
     let product = {
       id: this.id,
       name: form.value.name,
-      category: form.value.category.id,
+      category: form.value.category,
       price: form.value.price,
     }
     this.editProduct(product);
@@ -60,7 +56,13 @@ export class EditProductComponent implements OnInit {
   async fetchUser() {
     this.http.get<Product>(this.baseUrl + 'api/products/' + this.id).subscribe(result => {
       this.product = result;
-      this.selectedLevel = this.data[this.product.category-1];
+      this.selectedLevel = this.categories.find(c => c.id == this.product.category.id);
+    }, error => console.error(error));
+  }
+
+  async getCategories() {
+    this.http.get<Array<Category>>(this.baseUrl + 'api/categories').subscribe(result => {
+      this.categories = result;
     }, error => console.error(error));
   }
 
@@ -73,6 +75,11 @@ export class EditProductComponent implements OnInit {
 interface Product {
   id: number;
   name: string;
-  category: number;
+  category: Category;
   price: number;
+}
+
+interface Category {
+  id: number;
+  name: string;
 }

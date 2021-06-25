@@ -25,14 +25,14 @@ namespace Store_App.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Product>>> GetProducts()
         {
-            return await _context.Products.ToArrayAsync();
+            return await _context.Products.Include(p => p.Category).ToArrayAsync();
         }
 
         // GET: api/Products/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Product>> GetProduct(int id)
         {
-            var product = await _context.Products.FindAsync(id);
+            var product = await _context.Products.Include(p => p.Category).FirstAsync(prod => prod.Id == id);
 
             if (product == null)
             {
@@ -48,6 +48,8 @@ namespace Store_App.Controllers
         public async Task<IActionResult> PutProduct(Product product)
         {
             int id = product.Id;
+            var category = _context.Categories.Single(c => c.Id == product.Category.Id);
+            product.Category = category;
             _context.Entry(product).State = EntityState.Modified;
 
             try
@@ -74,10 +76,12 @@ namespace Store_App.Controllers
         [HttpPost]
         public async Task<ActionResult<Product>> PostProduct(Product product)
         {
+            var category = _context.Categories.Single(c => c.Id == product.Category.Id);
+            product.Category = category;
             _context.Products.Add(product);
             await _context.SaveChangesAsync();
 
-            return Ok("Added successfully");
+            return Ok(product);
         }
 
         // DELETE: api/Products/5

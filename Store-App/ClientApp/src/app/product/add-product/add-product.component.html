@@ -15,7 +15,7 @@
 
     <select [(ngModel)]="selectedLevel" name="category" id="category" class="form-control">
       <option value="">--Please choose an option--</option>
-      <option *ngFor="let item of data" [ngValue]="item">{{item.name}}</option>
+      <option *ngFor="let item of categories" [ngValue]="item">{{item.name}}</option>
     </select>
   </div>
 
