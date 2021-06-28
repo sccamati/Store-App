@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Store_App.Data;
@@ -15,10 +17,12 @@ namespace Store_App.Controllers
     public class ProductsController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public ProductsController(ApplicationDbContext context)
+        public ProductsController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         // GET: api/Products
@@ -79,13 +83,15 @@ namespace Store_App.Controllers
             var category = _context.Categories.Single(c => c.Id == product.Category.Id);
             product.Category = category;
             _context.Products.Add(product);
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            product.User = _context.Users.Single(u => u.Id == userId);
             await _context.SaveChangesAsync();
 
             return Ok(product);
         }
 
         // DELETE: api/Products/5
-        [HttpDelete("{id}")]
+        [HttpDelete("{id}")] 
         public async Task<IActionResult> DeleteProduct(int id)
         {
             var product = await _context.Products.FindAsync(id);
