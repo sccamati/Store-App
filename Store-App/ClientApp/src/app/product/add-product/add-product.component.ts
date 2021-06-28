@@ -61,6 +61,7 @@ interface Product {
   name: string;
   category: Category;
   price: number;
+  user: string;
 }
 
 interface Category {

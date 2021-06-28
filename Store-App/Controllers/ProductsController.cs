@@ -17,19 +17,17 @@ namespace Store_App.Controllers
     public class ProductsController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
-        private readonly UserManager<ApplicationUser> _userManager;
 
-        public ProductsController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
+        public ProductsController(ApplicationDbContext context)
         {
             _context = context;
-            _userManager = userManager;
         }
 
         // GET: api/Products
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Product>>> GetProducts()
         {
-            return await _context.Products.Include(p => p.Category).ToArrayAsync();
+            return await _context.Products.Include(p => p.Category).Include(p => p.User).ToArrayAsync();
         }
 
         // GET: api/Products/5

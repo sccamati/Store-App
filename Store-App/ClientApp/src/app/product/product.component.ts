@@ -1,16 +1,22 @@
-import { Component, Inject } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Component, Inject, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-product',
   templateUrl: './product.component.html'
 })
-export class ProductDataComponent {
+export class ProductDataComponent implements OnInit {
   public products: Product[];
+  public userId: string;
 
-  constructor(private http: HttpClient, @Inject('BASE_URL') private baseUrl: string) {
-    http.get<Product[]>(baseUrl + 'api/products').subscribe(result => {
+  constructor(private http: HttpClient, @Inject('BASE_URL') private baseUrl: string) {}
+
+  ngOnInit() {
+    this.http.get<Product[]>(this.baseUrl + 'api/products').subscribe(result => {
       this.products = result;
+    }, error => console.error(error));
+    this.http.get(this.baseUrl + 'api/user', {responseType: 'text'}).subscribe(result => {
+      this.userId = result;
     }, error => console.error(error));
   }
 
@@ -23,9 +29,21 @@ export class ProductDataComponent {
   }
 }
 
+
 interface Product {
   id: number;
   name: string;
-  category: number;
+  category: Category;
   price: number;
+  user: User;
 }
+
+interface User {
+  id: string;
+}
+
+interface Category {
+  id: number;
+  name: string;
+}
+

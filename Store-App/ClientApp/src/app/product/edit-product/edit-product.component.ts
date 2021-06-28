@@ -29,6 +29,7 @@ export class EditProductComponent implements OnInit {
       name: null,
       category: null,
       price: null,
+      user: null,
     }
     this.fetchUser();
     this.categories = null;
@@ -77,6 +78,7 @@ interface Product {
   name: string;
   category: Category;
   price: number;
+  user: string;
 }
 
 interface Category {

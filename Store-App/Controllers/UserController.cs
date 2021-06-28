@@ -1,8 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Store_App.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace Store_App.Controllers
@@ -18,11 +20,13 @@ namespace Store_App.Controllers
             _context = context;
         }
 
-        // GET: api/Products
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Product>>> GetProducts()
+        [Authorize]
+        public ActionResult<string> GetUserId()
         {
-            return await _context.Products.Include(p => p.Category).ToArrayAsync();
+            var userId =  User.FindFirstValue(ClaimTypes.NameIdentifier);
+            return Ok(userId);
         }
     }
 }
+
