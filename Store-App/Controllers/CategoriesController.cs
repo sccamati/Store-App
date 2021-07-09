@@ -25,7 +25,7 @@ namespace Store_App.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Category>>> GetCategories()
         {
-            string asd = "jol";
+            string tak = "asdasd";
             return await _context.Categories.ToArrayAsync();
         }
 
