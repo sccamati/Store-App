@@ -92,6 +92,7 @@ namespace Store_App.Controllers
         [HttpDelete("{id}")] 
         public async Task<IActionResult> DeleteProduct(int id)
         {
+            string hs = "sdsada";
             var product = await _context.Products.FindAsync(id);
             if (product == null)
             {
