@@ -82,7 +82,7 @@ namespace Store_App.Controllers
             product.Category = category;
             _context.Products.Add(product);
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-
+            product.User = _context.Users.Single(u => u.Id == userId);
             await _context.SaveChangesAsync();
 
             return Ok(product);

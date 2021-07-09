@@ -1,8 +1,5 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Component, Inject, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { AuthorizeService } from '../../api-authorization/authorize.service';
 
 @Component({
   selector: 'app-product',
@@ -10,20 +7,16 @@ import { AuthorizeService } from '../../api-authorization/authorize.service';
 })
 export class ProductDataComponent implements OnInit {
   public products: Product[];
-  public user2: User2;
-  public isAuthenticated: Observable<boolean>;
-  public userName: Observable<string>;
-  constructor(private http: HttpClient, @Inject('BASE_URL') private baseUrl: string, private authorizeService: AuthorizeService) {}
+  public userId: string;
+
+  constructor(private http: HttpClient, @Inject('BASE_URL') private baseUrl: string) {}
 
   ngOnInit() {
-    this.isAuthenticated = this.authorizeService.isAuthenticated();
-    this.userName = this.authorizeService.getUser().pipe(map(u => u && u.name));
-
     this.http.get<Product[]>(this.baseUrl + 'api/products').subscribe(result => {
       this.products = result;
     }, error => console.error(error));
-    this.http.get<User2>(this.baseUrl + 'api/user').subscribe(result => {
-      this.user2 = result;
+    this.http.get(this.baseUrl + 'api/user', {responseType: 'text'}).subscribe(result => {
+      this.userId = result;
     }, error => console.error(error));
   }
 
@@ -45,14 +38,10 @@ interface Product {
   user: User;
 }
 
-
 interface User {
   id: string;
 }
-interface User2 {
-  id: string;
-  role: string;
-}
+
 interface Category {
   id: number;
   name: string;

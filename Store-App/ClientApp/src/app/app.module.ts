@@ -38,7 +38,7 @@ import { EditProductComponent } from './product/edit-product/edit-product.compon
       { path: 'fetch-data', component: FetchDataComponent, canActivate: [AuthorizeGuard] },
 
       { path: 'product', component: ProductDataComponent },
-      { path: 'product/add', component: AddProductComponent, canActivate: [AuthorizeGuard], data: { roles: ['Admin']} },
+      { path: 'product/add', component: AddProductComponent, canActivate: [AuthorizeGuard] },
       { path: 'product/edit/:id', component: EditProductComponent },
     ])
   ],

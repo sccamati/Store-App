@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Store_App.Data;
-using Store_App.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,17 +22,10 @@ namespace Store_App.Controllers
 
         [HttpGet]
         [Authorize]
-        public ActionResult<SendUserModel> GetUserId()
+        public ActionResult<string> GetUserId()
         {
             var userId =  User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var roleId = _context.UserRoles.Single(r => r.UserId == userId).RoleId;
-            var role = _context.Roles.Single(r => r.Id == roleId);
-            SendUserModel user = new SendUserModel
-            {
-                Id = userId,
-                Role = role.Name
-            };
-            return Ok(user);
+            return Ok(userId);
         }
     }
 }

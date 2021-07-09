@@ -21,12 +21,11 @@
       <td>{{ product.category.name }}</td>
       <td>{{ product.price }}</td>
       <td>
-        <a *ngIf="product.user.id == user2.id" [routerLink]="['edit', product.id]" class="btn btn-primary btn-sm">Edit</a>
-        <button *ngIf="product.user.id == user2.id" class="btn btn-danger btn-sm" (click)="onDelete(product.id)">Delete</button>
-        {{product.user.id}}
+        <a *ngIf="product.user.id == userId" [routerLink]="['edit', product.id]" class="btn btn-primary btn-sm">Edit</a>
+        <button *ngIf="product.user.id == userId" class="btn btn-danger btn-sm" (click)="onDelete(product.id)">Delete</button>
+        
       </td>
 
     </tr>
   </tbody>
 </table>
-
