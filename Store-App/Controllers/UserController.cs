@@ -24,7 +24,6 @@ namespace Store_App.Controllers
         [Authorize]
         public ActionResult<string> GetUserId()
         {
-            string aaaa = "asdasd";
             var userId =  User.FindFirstValue(ClaimTypes.NameIdentifier);
             return Ok(userId);
         }
